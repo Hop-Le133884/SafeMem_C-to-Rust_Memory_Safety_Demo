@@ -17,7 +17,7 @@ mod tests {
     fn c_test_double_free() {
         unsafe {
             let buffer = buffer_init(10);
-            println!("C created buffer");
+            println!("C created buffer with initial capacity of 10 bytes");
 
             // Append data that fits
             let c_string = CString::new("Hello").unwrap(); // CString adds the null terminator auto
@@ -37,7 +37,7 @@ mod tests {
             println!("C attempting to free buffer second time after delay...");
             buffer_double_free(buffer); // This will cause a double-free error
             
-            println!("C Test completed");
+            println!("C Test completed, C allow double free the heap memory");
         }
     }
 
