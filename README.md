@@ -88,7 +88,6 @@ safemem/
     ├── c_overflow_test.rs
     └── c_over_read.rs
 
-
 ## How It Works
 - **C Version**:  
   - `buffer_append`: No bounds checking—overflows possible.  
