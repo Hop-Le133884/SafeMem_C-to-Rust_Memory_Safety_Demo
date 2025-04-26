@@ -30,9 +30,9 @@ Memory safety bugs (e.g., buffer overflows) account for ~70% of serious security
    ```
 
 ### Usage
-- ## C Vulnerabilities##: The test suite (tests/) includes tests (e.g., c_overflow_test.rs, c_double_free.rs, c_over_read.rs) that call the vulnerable C code to trigger buffer overflows, over-reads, and double-free errors. Expect test failures and potential crashes or undefined behavior when these tests are executed.
-- ## Rust Safety ##: The Rust implementation (src/lib.rs and tests within tests/bindings.rs and potentially others) demonstrates Rust's memory safety through its ownership system and the use of Vec which handles memory management automatically and performs bounds checking. Tests like rust_test_buffer_overflow, rust_test_double_free, and rust_test_over_read in src/lib.rs showcase this.
-- ## Output Example##:
+- ## C Vulnerabilities: The test suite (tests/) includes tests (e.g., c_overflow_test.rs, c_double_free.rs, c_over_read.rs) that call the vulnerable C code to trigger buffer overflows, over-reads, and double-free errors. Expect test failures and potential crashes or undefined behavior when these tests are executed.
+- ## Rust Safety: The Rust implementation (src/lib.rs and tests within tests/bindings.rs and potentially others) demonstrates Rust's memory safety through its ownership system and the use of Vec which handles memory management automatically and performs bounds checking. Tests like rust_test_buffer_overflow, rust_test_double_free, and rust_test_over_read in src/lib.rs showcase this.
+- ## Output Example:
 running 4 tests
 test tests::c_double_free ... ok
 test tests::c_overflow_test ... FAILED
@@ -99,14 +99,14 @@ safemem/
 - **FFI**: Rust calls C via `extern "C"` to compare side-by-side.
 
 ## Try It Out
-- ## C Version##:
+- ## C Version:
 c_src/buffer.c: Implements a buffer with potential for memory safety issues.
 c_src/buffer.h: Header file for the C buffer.
 tests/: Rust tests that call C functions (via bindings.rs) in c_src to trigger vulnerabilities. test_vulnerabilities.c might contain similar logic or be used for direct C testing.
 Vulnerabilities like buffer overflows (buffer_append without bounds checking), over-reads, and double-free are intentionally present.
-- ## Rust Version##:
+- ## Rust Version:
 src/lib.rs: Implements a safe buffer (BufferR struct) using Vec for automatic memory management and bounds checking. Includes Rust-specific tests (rust_test_buffer_overflow, rust_test_double_free, rust_test_over_read) to demonstrate safe behavior. The Drop trait ensures safe, single deallocation for the LowLevelBuffer.
-- ## FFI##:
+- ## FFI:
 tests/bindings.rs: Defines the foreign function interface (extern "C") that allows Rust to call functions in the compiled C library.
 Rust tests in tests/ use these bindings to interact with the vulnerable C code and demonstrate the safety differences.
 Try It Out
@@ -118,7 +118,7 @@ Over-Read: The tests/c_over_read.rs file likely attempts to read beyond the boun
 
 Double-Free: The tests/c_double_free.rs file likely calls the C buffer_free function twice on the same buffer. This should lead to a crash or an error reported by Address Sanitizer. The rust_test_double_free in src/lib.rs shows how Rust's ownership and Drop trait prevent this by ensuring memory is deallocated exactly once when the BufferR goes out of scope.
 
-- ## Debugging with Address Sanitizer##: To detect memory errors in the C code, run the tests with Address Sanitizer enabled (if your compiler supports it):
+- ## Debugging with Address Sanitizer: To detect memory errors in the C code, run the tests with Address Sanitizer enabled (if your compiler supports it):
 
 Bash
 
