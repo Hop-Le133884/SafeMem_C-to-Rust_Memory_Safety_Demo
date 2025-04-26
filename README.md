@@ -30,9 +30,9 @@ Memory safety bugs (e.g., buffer overflows) account for ~70% of serious security
    ```
 
 ### Usage
-- ### C Vulnerabilities***: The test suite (tests/) includes tests (e.g., c_overflow_test.rs, c_double_free.rs, c_over_read.rs) that call the vulnerable C code to trigger buffer overflows, over-reads, and double-free errors. Expect test failures and potential crashes or undefined behavior when these tests are executed.
-- ### Rust Safety***: The Rust implementation (src/lib.rs and tests within tests/bindings.rs and potentially others) demonstrates Rust's memory safety through its ownership system and the use of Vec which handles memory management automatically and performs bounds checking. Tests like rust_test_buffer_overflow, rust_test_double_free, and rust_test_over_read in src/lib.rs showcase this.
-- ### Output Example:
+- **C Vulnerabilities**: The test suite (tests/) includes tests (e.g., c_overflow_test.rs, c_double_free.rs, c_over_read.rs) that call the vulnerable C code to trigger buffer overflows, over-reads, and double-free errors. Expect test failures and potential crashes or undefined behavior when these tests are executed.
+- **Rust Safety**: The Rust implementation (src/lib.rs and tests within tests/bindings.rs and potentially others) demonstrates Rust's memory safety through its ownership system and the use of Vec which handles memory management automatically and performs bounds checking. Tests like rust_test_buffer_overflow, rust_test_double_free, and rust_test_over_read in src/lib.rs showcase this.
+- **Output Example**:
 running 4 tests
 test tests::c_double_free ... ok
 test tests::c_overflow_test ... FAILED
