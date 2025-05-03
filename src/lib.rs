@@ -23,7 +23,11 @@ impl BufferR {
     pub fn get_size(&self) -> usize {
         self.data.len()
     }
-    
+    // Method to get the current buffer capacity
+    pub fn get_capacity(&self) -> usize {
+        self.data.capacity()
+    }
+
     pub fn print(&self) {
         println!("Buffer content ({} bytes): ", self.data.len());
         for byte in &self.data {
@@ -36,11 +40,12 @@ impl BufferR {
 #[cfg(test)]
 
 mod tests {
+    use std::string;
     use std::{fmt::Error, num::ParseIntError};
 
     use crate::BufferR;
     #[test]
-    fn rust_test_buffer_overflow() {
+    fn rust_buffer_overflow() {
         println!("\n=== Buffer Overflow Test (Rust Implementation) ===");
         
         // Create a small buffer
@@ -50,6 +55,7 @@ mod tests {
         // Add data within capacity
         buffer.append(b"Hello");
         println!("Added 5 bytes");
+        println!("Buffer capacity: {:?}", buffer.get_capacity());
         buffer.print();
         
         // Try to add data exceeding capacity
@@ -61,12 +67,13 @@ mod tests {
         buffer.print();
         
         assert!(buffer.get_size() == 64);
-        println!("Test passed: Buffer correctly contains all 64 bytes");
+        print!("Buffer capacity after added exceeded data: {}", buffer.get_capacity());
+        println!("\nTest passed: Buffer correctly contains all 64 bytes");
         println!("Rust drops buffer memory once it goes out of scope")
     }
     #[test]
     #[should_panic]
-    fn rust_test_double_free() {
+    fn rust_double_free() {
         println!("\n=== Double free Test (Rust Implementation) ===");
         {
         // Create a small buffer
@@ -84,16 +91,13 @@ mod tests {
 
         print!("\n");
         println!("Introduce double free here using panic mode if undefined behavior or memory bugs");
-        println!("Defined error occurs at compile-time to prevent memory issues or vulnerabilies");
-        //drop(buffer);
-        if let e = String::from("cannot find value `buffer` in this scope")  {
-            println!("{:?}", e);
-        }
+        println!("error occurs at compile-time to prevent memory issues or vulnerabilies");
+        //drop(buffer); //
     }
 
     #[test]
     #[should_panic]
-    fn rust_test_over_read() {
+    fn rust_over_read() {
         println!("\n=== Over-Read Test (Unsafe Rust Implementation) ===");
         let mut buffer = BufferR::new(10);
         println!("Created buffer with capacity 10");
@@ -111,6 +115,45 @@ mod tests {
                 c);
         }
         // prevent memory issues with panic mode
+    }
+
+    #[test]
+    #[should_panic]
+    fn rust_use_after_free() {
+        {
+            // Create a small buffer
+            let mut buffer = BufferR::new(10);
+            println!("Created buffer with capacity 10");
+            
+            // Add data within capacity
+            buffer.append(b"Hello");
+            println!("Added 5 bytes");
+            buffer.print();
+        } //
+        
+        println!("Try to append buffer after freed");
+        //buffer.append(b"Word");
+        //if let e = string::from
+    }
+
+    use crate::LowLevelBuffer;
+    #[test]
+    fn rust_low_buffer_overflow() {
+        println!("\n=== Buffer Overflow Test (Rust Implementation) ===");
+        
+        // Create a small buffer
+        let mut low_buffer = LowLevelBuffer::new(10);
+        println!("Created buffer with capacity 10");
+        
+        // Add data within capacity
+        low_buffer.append(b"Hello");
+        println!("Added 5 bytes");
+        //low_buffer.print();
+        
+        // Try to add data exceeding capacity
+        println!("Attempting to add 59 more bytes (exceeds initial capacity)...");
+        low_buffer.append(b"This is a longer string I want to input to Rust buffer data");
+        
     }
 }
 
@@ -136,13 +179,12 @@ impl LowLevelBuffer {
             capacity,
         }
     }
-    
+
     pub fn append(&mut self, new_data: &[u8]) -> bool {
         if self.size + new_data.len() > self.capacity {
             // Reallocate with more capacity
             let new_capacity = self.capacity * 2;
             let old_layout = std::alloc::Layout::array::<u8>(self.capacity).unwrap();
-            //let new_layout = std::alloc::Layout::array::<u8>(new_capacity).unwrap();
             
             unsafe {
                 let new_ptr = std::alloc::realloc(

@@ -14,7 +14,7 @@ mod tests {
     use super::*;
     
     #[test]
-    fn c_test_double_free() {
+    fn c_double_free() {
         unsafe {
             let buffer = buffer_init(10);
             println!("C created buffer with initial capacity of 10 bytes");

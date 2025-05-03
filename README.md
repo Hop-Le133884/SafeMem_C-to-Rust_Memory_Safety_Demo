@@ -78,7 +78,7 @@ safemem/
 ├── c_src/            # Vulnerable C code
 │   ├── buffer.c
 │   ├── buffer.h
-│   └── test_vulnerabilities.c # C test logic (may be integrated into Rust tests)
+│   └── test_vulnerabilities.c # C test logic (may be demo seperately if in case)
 ├── README.md
 ├── src/              # Rust code
 │   └── lib.rs        # Safe Buffer implementation (BufferR struct and tests)
