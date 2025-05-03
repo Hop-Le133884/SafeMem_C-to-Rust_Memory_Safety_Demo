@@ -69,7 +69,7 @@ test result: FAILED. 5 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; 
 
 
 ## Project Structure
-safemem/
+ safemem/
 ├── buffer.rs         # (Potentially a separate Rust buffer implementation - clarify if needed)
 ├── build.rs          # C build script
 ├── Cargo.lock
@@ -83,10 +83,10 @@ safemem/
 ├── src/              # Rust code
 │   └── lib.rs        # Safe Buffer implementation (BufferR struct and tests)
 └── tests/            # Rust integration tests, including C vulnerability tests via FFI
-    ├── bindings.rs   # FFI bindings to the C code
-    ├── c_double_free.rs
-    ├── c_overflow_test.rs
-    └── c_over_read.rs
+   ├── bindings.rs   # FFI bindings to the C code
+   ├── c_double_free.rs
+   ├── c_overflow_test.rs
+   └── c_over_read.rs
 
 ## How It Works
 - **C Version**:  
